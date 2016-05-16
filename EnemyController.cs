@@ -9,6 +9,8 @@ public class EnemyController : MonoBehaviour {
 	public float time = 100;
 	public float currentHealth;
 	public float startingHealth = 2;
+	public float bulletDamage = 1;
+	public float boostedBulletDamage = 2;
 	// Use this for initialization
 	void Start () {
 		min = transform.position.x;
@@ -34,7 +36,12 @@ public class EnemyController : MonoBehaviour {
 	{
 		if(collision.gameObject.tag == "Projectile")
 		{
-			currenthealth -= 1;
+			currenthealth -= bulletDamage;
+			Destroy(collision.gameObject);
+		}
+		if(collision.gameObject.tag == "BoostProjectile")
+		{
+			currentHealth -= boostedBulletDamage;
 			Destroy(collision.gameObject);
 		}
 	}
