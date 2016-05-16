@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour {
 	int isGunBoost = 0;
 	float gunBoostEnd;
 	int isPlatform;
+	
+	public GameObject bulletPrefab;
+	public GameObject shotSpawn;
+	public float bulletImpulse;
 
 	CharacterController characterController;
 	// Use this for initialization
@@ -52,6 +56,12 @@ public class PlayerController : MonoBehaviour {
 		characterController.Move (speed * Time.deltaTime);
 		time -= Time.deltaTime;
 		timer.text = "Time: " + Mathf.Round(time);
+		
+		if (Input.GetButtonDown ("Fire1"))
+		{
+			GameObject theBullet = (GameObject)Instantiate(bulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
+			theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
+		}
 		if (time <= 0) 
 		{
 			currentHealth = 0.0f;
