@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
 	float currentHealth;
 	public int pickupCount;
 	public Text counter;
+	public Text healthDisplay;
 
 	int isShield = 0;
 	float shieldBreak;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 		characterController = GetComponent<CharacterController> ();
 		currentHealth = startingHealth;
 		counter.text = "Points: 0";
+		healthDisplay.text = "Health: " + startingHealth.ToString ();
 	}
 	
 	// Update is called once per frame
@@ -96,11 +98,13 @@ public class PlayerController : MonoBehaviour {
 			break;
 
 		case "Shield":
+			other.gameObject.SetActive (false);
 			isShield = 1;
 			shieldBreak = time - 10;
 			break;
 
 		case "GunBoost":
+			other.gameObject.SetActive (false);
 			isGunBoost = 1;
 			gunBoostEnd = time - 10;
 			break;
