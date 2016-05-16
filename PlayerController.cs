@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 	int isPlatform;
 	
 	public GameObject bulletPrefab;
+	public GameObject boostedBulletPrefab;
 	public GameObject shotSpawn;
 	public float bulletImpulse;
 
@@ -56,11 +57,26 @@ public class PlayerController : MonoBehaviour {
 		characterController.Move (speed * Time.deltaTime);
 		time -= Time.deltaTime;
 		timer.text = "Time: " + Mathf.Round(time);
-		
+		if(time == gunBoostEnd && isGunBoost == 1)
+		{
+			isGunBoost = 0;
+		}
+		if(time == shieldBreak && isShield == 1)
+		{
+			isShield == 0;
+		}
 		if (Input.GetButtonDown ("Fire1"))
 		{
-			GameObject theBullet = (GameObject)Instantiate(bulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
-			theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
+			if(isGunBoost == 0)
+			{
+				GameObject theBullet = (GameObject)Instantiate(bulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
+				theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
+			}
+			if(isGunBoost == 1)
+			{
+				GameObject theBullet = (GameObject)Instantiate(boostedBulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
+				theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
+			}
 		}
 		if (time <= 0) 
 		{
