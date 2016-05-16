@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 	public int pickupCount;
 	public Text counter;
 	public Text healthDisplay;
+	public GameObject Boss;
 
 	int isShield = 0;
 	float shieldBreak;
@@ -137,6 +138,10 @@ public class PlayerController : MonoBehaviour {
 		
 		case "Platform":
 			isPlatform = 1;
+			break;
+			
+		case "BossTrigger":
+			Boss.gameObject.SetActive(True);
 			break;
 		}
 	}
