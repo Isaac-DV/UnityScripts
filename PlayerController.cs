@@ -12,11 +12,15 @@ public class PlayerController : MonoBehaviour {
 	public float startingHealth;
 	public Text timer;
 	public float time = 100;
+	public float timeUntilTele = -1;
 	float currentHealth;
 	public int pickupCount;
 	public Text counter;
 	public Text healthDisplay;
+	public Text winLoseText;
 	public GameObject Boss;
+	public int lifeCount = 3;
+	bool teleToHub = false;
 
 	int isShield = 0;
 	float shieldBreak;
@@ -49,8 +53,10 @@ public class PlayerController : MonoBehaviour {
 	public GameObject level6Hub;
 	public GameObject hub;
 
-	int inHub = ;
-
+	public int boss1UnlockPoints;
+	public int boss2UnlockPoints;
+	
+	public GameObject player;
 	CharacterController characterController;
 	// Use this for initialization
 	void Start () {
@@ -58,6 +64,7 @@ public class PlayerController : MonoBehaviour {
 		currentHealth = startingHealth;
 		counter.text = "Points: 0";
 		healthDisplay.text = "Health: " + startingHealth.ToString ();
+		winLoseText.text = "";
 	}
 
 	// Update is called once per frame
@@ -79,6 +86,7 @@ public class PlayerController : MonoBehaviour {
 
 		characterController.Move (speed * Time.deltaTime);
 		time -= Time.deltaTime;
+		timeUntilTele -=Time.deltaTime;
 		timer.text = "Time: " + Mathf.Round(time);
 		if(time == gunBoostEnd && isGunBoost == 1)
 		{
@@ -107,8 +115,28 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (currentHealth <= 0) 
 		{
-			Destroy (gameObject);
-
+			if(!(0 < Mathf.Round(timeUntilTele) <= 3))
+			{
+			timeUntilTele = 3;
+			player.gameObject.SetActive(false);
+			}
+			winLoseText.text = "Game Over! Teleporting in " + Mathf.Round(timeUntilTele);
+			
+		}
+		if(Mathf.Round(timeUntilTele) == 0)
+		{
+			if(teleToHub == false)
+			{
+				teleToHub == true;
+				transform.position = hub.transform.position;
+				player.gameObject.SetActive(true);
+				lifeCount -= 1;
+				currentHealth = startingHealth;
+			}
+		}
+		if(Mathf.Round(timeUntilTele) < 0)
+		{
+			teleToHub = false;
 		}
 	}
 
@@ -186,31 +214,65 @@ public class PlayerController : MonoBehaviour {
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			level2Hub.gameObject.SetActive(true);
+			if(pickupCount >= boss1UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
+			if(pickupCount >= boss2UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
 		}
 		if (other.gameObject == level2End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			level3Hub.gameObject.SetActive(true);
+			if(pickupCount >= boss1UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
+			if(pickupCount >= boss2UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
 		}
 		if (other.gameObject == level3End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			level4Hub.gameObject.SetActive(true);
+			if(pickupCount >= boss2UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
 		}
 		if (other.gameObject == level4End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			level5Hub.gameObject.SetActive(true);
+			if(pickupCount >= boss2UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
 		}
 		if (other.gameObject == level5End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			level6Hub.gameObject.SetActive(true);
+			if(pickupCount >= boss2UnlockPoints;)
+			{
+				level3Hub.gameObject.SetAcive(true);
+			}
 		}
 		if (other.gameObject == level6End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
+			
 		}
 	}
 }
