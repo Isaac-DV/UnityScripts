@@ -18,15 +18,18 @@ public class PlayerController : MonoBehaviour {
 	public Text counter;
 	public Text healthDisplay;
 	public Text winLoseText;
+	public Text lifeCountText;
+	public Text messageText;
 	public GameObject Boss;
 	public int lifeCount = 3;
 	bool teleToHub = false;
 
-	int isShield = 0;
+	int isShield = 5000;
 	float shieldBreak;
 	int isGunBoost = 0;
 	float gunBoostEnd;
 	int isPlatform;
+	int isNotDead = 1;
 
 	public GameObject bulletPrefab;
 	public GameObject boostedBulletPrefab;
@@ -55,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 
 	public int boss1UnlockPoints;
 	public int boss2UnlockPoints;
-	
+
 	public GameObject player;
 	CharacterController characterController;
 	// Use this for initialization
@@ -65,47 +68,52 @@ public class PlayerController : MonoBehaviour {
 		counter.text = "Points: 0";
 		healthDisplay.text = "Health: " + startingHealth.ToString ();
 		winLoseText.text = "";
+		lifeCountText.text = "Lives: " + lifeCount.ToString ();
+		messageText.text = "";
 	}
 
 	// Update is called once per frame
 	void Update () {
-		float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
-		verticalVelocity += Physics.gravity.y * Time.deltaTime;
-		Vector3 speed = new Vector3 (sideSpeed, verticalVelocity, 0);
+		
+		if (isNotDead == 1) {
+			float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
+			verticalVelocity += Physics.gravity.y * Time.deltaTime;
+			Vector3 speed = new Vector3 (sideSpeed, verticalVelocity, 0);
 
-		if (characterController.isGrounded && Input.GetButtonDown ("Jump")) 
-		{
-			verticalVelocity = jumpSpeed;
+			if (characterController.isGrounded && Input.GetButtonDown ("Jump")) {
+				verticalVelocity = jumpSpeed;
+			}
+
+			if (isPlatform == 1) {
+				verticalVelocity = platformJumpSpeed;
+				isPlatform = 0;
+			}
+			characterController.Move (speed * Time.deltaTime);
 		}
-
-		if (isPlatform == 1) 
-		{
-			verticalVelocity = platformJumpSpeed;
-			isPlatform = 0;
-		}
-
-		characterController.Move (speed * Time.deltaTime);
+			
 		time -= Time.deltaTime;
 		timeUntilTele -=Time.deltaTime;
 		timer.text = "Time: " + Mathf.Round(time);
-		if(time == gunBoostEnd && isGunBoost == 1)
+		if(time <= gunBoostEnd && isGunBoost == 1)
 		{
 			isGunBoost = 0;
+			messageText.text = "";
 		}
-		if(time == shieldBreak && isShield == 1)
+		if(time <= shieldBreak && isShield == 1)
 		{
 			isShield = 0;
+			messageText.text = "";
 		}
 		if (Input.GetButtonDown ("Fire1"))
 		{
 			if(isGunBoost == 0)
 			{
-				GameObject theBullet = (GameObject)Instantiate(bulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
+				GameObject theBullet = (GameObject)Instantiate(bulletPrefab, shotSpawn.transform.position, bulletPrefab.transform.rotation);
 				theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
 			}
 			if(isGunBoost == 1)
 			{
-				GameObject theBullet = (GameObject)Instantiate(boostedBulletPrefab, shotSpawn.transform.position, shotSpawn.transform.rotation);
+				GameObject theBullet = (GameObject)Instantiate(boostedBulletPrefab, shotSpawn.transform.position, boostedBulletPrefab.transform.rotation);
 				theBullet.GetComponent<Rigidbody>().AddForce (shotSpawn.transform.forward * bulletImpulse, ForceMode.Impulse);
 			}
 		}
@@ -113,31 +121,43 @@ public class PlayerController : MonoBehaviour {
 		{
 			currentHealth = 0.0f;
 		}
-		if (currentHealth <= 0) 
-		{
-			if(!(0 < Mathf.Round(timeUntilTele) <= 3))
-			{
-			timeUntilTele = 3;
-			player.gameObject.SetActive(false);
-			}
-			winLoseText.text = "Game Over! Teleporting in " + Mathf.Round(timeUntilTele);
-			
-		}
+
 		if(Mathf.Round(timeUntilTele) == 0)
 		{
 			if(teleToHub == false)
 			{
-				teleToHub == true;
+				teleToHub = true;
 				transform.position = hub.transform.position;
+				time = 5000;
+				isNotDead = 1;
 				player.gameObject.SetActive(true);
 				lifeCount -= 1;
 				currentHealth = startingHealth;
+				lifeCountText.text = "Lives: " + lifeCount.ToString ();
+				winLoseText.text = "";
+			}
+		}
+		if (currentHealth <= 0) 
+		{
+			if (lifeCount > 1) {
+				if (!(0.0f < Mathf.Round (timeUntilTele) && Mathf.Round (timeUntilTele) <= 3f)) {
+					timeUntilTele = 3.499f;
+					player.gameObject.SetActive (false);
+					isNotDead = 0;
+				}
+				winLoseText.text = "You lost a life! Teleporting in " + Mathf.Round (timeUntilTele);
+			} else {
+				winLoseText.text = "Game Over! Restart to play again.";
+				lifeCount = 0;
+				isNotDead = 0;
+				lifeCountText.text = "Lives: " + lifeCount.ToString();
 			}
 		}
 		if(Mathf.Round(timeUntilTele) < 0)
 		{
 			teleToHub = false;
 		}
+
 	}
 
 	void OnTriggerEnter(Collider other) 
@@ -151,7 +171,10 @@ public class PlayerController : MonoBehaviour {
 
 		case "Enemy":
 			if (isShield == 1 && time > shieldBreak) {
+				
+			} else {
 				currentHealth -= 10;
+				healthDisplay.text = "Health: " + currentHealth.ToString ();
 			}
 			break;
 
@@ -163,12 +186,14 @@ public class PlayerController : MonoBehaviour {
 			other.gameObject.SetActive (false);
 			isShield = 1;
 			shieldBreak = time - 10;
+			messageText.text = "Shield Powerup Collected!";
 			break;
 
 		case "GunBoost":
 			other.gameObject.SetActive (false);
 			isGunBoost = 1;
 			gunBoostEnd = time - 10;
+			messageText.text = "Gun Boost Powerup Collected!";
 			break;
 
 		case "Platform":
@@ -176,7 +201,8 @@ public class PlayerController : MonoBehaviour {
 			break;
 
 		case "BossTrigger":
-			Boss.gameObject.SetActive(true);
+			Boss.gameObject.SetActive (true);
+			time = 180;
 			break;
 		}
 
@@ -215,13 +241,13 @@ public class PlayerController : MonoBehaviour {
 			transform.position = hub.transform.position;
 			time = 5000;
 			level2Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss1UnlockPoints;)
+			if(pickupCount >= boss1UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive (true);
 			}
-			if(pickupCount >= boss2UnlockPoints;)
+			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level2End) 
@@ -229,13 +255,13 @@ public class PlayerController : MonoBehaviour {
 			transform.position = hub.transform.position;
 			time = 5000;
 			level3Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss1UnlockPoints;)
+			if(pickupCount >= boss1UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
-			if(pickupCount >= boss2UnlockPoints;)
+			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level3End) 
@@ -243,9 +269,9 @@ public class PlayerController : MonoBehaviour {
 			transform.position = hub.transform.position;
 			time = 5000;
 			level4Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints;)
+			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level4End) 
@@ -253,9 +279,9 @@ public class PlayerController : MonoBehaviour {
 			transform.position = hub.transform.position;
 			time = 5000;
 			level5Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints;)
+			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level5End) 
@@ -263,16 +289,16 @@ public class PlayerController : MonoBehaviour {
 			transform.position = hub.transform.position;
 			time = 5000;
 			level6Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints;)
+			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetAcive(true);
+				level3Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level6End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			
+
 		}
 	}
 }
