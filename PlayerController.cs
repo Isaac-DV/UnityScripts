@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
 	public float verticalVelocity;
 	public float jumpSpeed = 20.0f;
 	public float platformJumpSpeed = 50.0f;
-	public float startingHealth;
+	public float startingHealth = 10.0f;
 	public Text timer;
 	public float time = 100;
 	public float timeUntilTele = -1;
@@ -130,6 +130,7 @@ public class PlayerController : MonoBehaviour {
 				transform.position = hub.transform.position;
 				time = 5000;
 				isNotDead = 1;
+				currentHealth = startingHealth;
 				player.gameObject.SetActive(true);
 				lifeCount -= 1;
 				currentHealth = startingHealth;
