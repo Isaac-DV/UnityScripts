@@ -104,6 +104,15 @@ public class PlayerController : MonoBehaviour {
 			isShield = 0;
 			messageText.text = "";
 		}
+		
+		if(Input.GetKeyDown("d"))
+		{
+			player.transform.rotation = new Vector3(90, 0, 180);
+		}
+		if(Input.GetKeyDown("a"))
+		{
+			player.transform.rotation = new Vector3(90, )
+		}
 		if (Input.GetButtonDown ("Fire1"))
 		{
 			if(isGunBoost == 0)
