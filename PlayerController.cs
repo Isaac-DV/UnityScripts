@@ -11,7 +11,8 @@ public class PlayerController : MonoBehaviour {
 	public float platformJumpSpeed = 50.0f;
 	public float startingHealth = 10.0f;
 	public Text timer;
-	public float time = 100;
+	float time;
+	public float StartingTime = 100;
 	public float timeUntilTele = -1;
 	float currentHealth;
 	public int pickupCount;
@@ -30,6 +31,8 @@ public class PlayerController : MonoBehaviour {
 	float gunBoostEnd;
 	int isPlatform;
 	int isNotDead = 1;
+	bool facingRight = true;
+	bool facingLeft = false;
 
 	public GameObject bulletPrefab;
 	public GameObject boostedBulletPrefab;
@@ -65,6 +68,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		characterController = GetComponent<CharacterController> ();
 		currentHealth = startingHealth;
+		time = StartingTime;
 		counter.text = "Points: 0";
 		healthDisplay.text = "Health: " + startingHealth.ToString ();
 		winLoseText.text = "";
@@ -105,13 +109,17 @@ public class PlayerController : MonoBehaviour {
 			messageText.text = "";
 		}
 		
-		if(Input.GetKeyDown("d"))
+		if(Input.GetKeyDown("d") && facingRight == false)
 		{
 			player.transform.rotation = new Vector3(90, 0, 180);
+			facingRight = true;
+			facingLeft = false;
 		}
-		if(Input.GetKeyDown("a"))
+		if(Input.GetKeyDown("a") && facingLeft == false)
 		{
-			player.transform.rotation = new Vector3(90, )
+			player.transform.rotation = new Vector3(90,180,180 );
+			facingLeft = true;
+			facingRight = false;
 		}
 		if (Input.GetButtonDown ("Fire1"))
 		{
@@ -219,22 +227,22 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject == level1Hub) 
 		{
 			transform.position = level1Start.transform.position;
-			time = 100;
+			time = StartingTime;
 		}
 		if (other.gameObject == level2Hub) 
 		{
 			transform.position = level2Start.transform.position;
-			time = 100;
+			time = StartingTime;
 		}
 		if (other.gameObject == level3Hub) 
 		{
 			transform.position = level3Start.transform.position;
-			time = 100;
+			time = StartingTime;
 		}
 		if (other.gameObject == level4Hub) 
 		{
 			transform.position = level4Start.transform.position;
-			time = 100;
+			time = StartingHealth;
 		}
 		if (other.gameObject == level5Hub) 
 		{
