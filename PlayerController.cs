@@ -229,6 +229,9 @@ public class PlayerController : MonoBehaviour {
 			Boss.gameObject.SetActive (true);
 			time = 180;
 			break;
+		case "Crush":
+			currentHealth = 0.0f;
+			break;
 		}
 
 		if (other.gameObject == level1Hub) 
@@ -254,12 +257,12 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject == level5Hub) 
 		{
 			transform.position = level5Start.transform.position;
-			time = 100;
+			time = StartingTime;
 		}
 		if (other.gameObject == level6Hub) 
 		{
 			transform.position = level6Start.transform.position;
-			time = 100;
+			time = StartingTime;
 		}
 		if (other.gameObject == level1End) 
 		{
@@ -272,7 +275,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetActive(true);
+				level6Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level2End) 
@@ -286,7 +289,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetActive(true);
+				level6Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level3End) 
@@ -296,7 +299,7 @@ public class PlayerController : MonoBehaviour {
 			level4Hub.gameObject.SetActive(true);
 			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetActive(true);
+				level6Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level4End) 
@@ -306,7 +309,7 @@ public class PlayerController : MonoBehaviour {
 			level5Hub.gameObject.SetActive(true);
 			if(pickupCount >= boss2UnlockPoints)
 			{
-				level3Hub.gameObject.SetActive(true);
+				level6Hub.gameObject.SetActive(true);
 			}
 		}
 		if (other.gameObject == level5End) 
