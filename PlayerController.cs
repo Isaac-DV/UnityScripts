@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
 		if (isNotDead == 1) {
 			float sideSpeed = Input.GetAxis ("Horizontal") * movementSpeed;
 			verticalVelocity += Physics.gravity.y * Time.deltaTime;
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			characterController.Move (speed * Time.deltaTime);
 		}
-			
+
 		time -= Time.deltaTime;
 		timeUntilTele -=Time.deltaTime;
 		timer.text = "Time: " + Mathf.Round(time);
@@ -108,16 +108,16 @@ public class PlayerController : MonoBehaviour {
 			isShield = 0;
 			messageText.text = "";
 		}
-		
+
 		if(Input.GetKeyDown("d") && facingRight == false)
 		{
-			player.transform.rotation = new Vector3(90, 0, 180);
+			player.transform.Rotate (0, 0, 180);
 			facingRight = true;
 			facingLeft = false;
 		}
 		if(Input.GetKeyDown("a") && facingLeft == false)
 		{
-			player.transform.rotation = new Vector3(90,180,180 );
+			player.transform.Rotate (0, 0, 180);
 			facingLeft = true;
 			facingRight = false;
 		}
@@ -148,6 +148,7 @@ public class PlayerController : MonoBehaviour {
 				time = 5000;
 				isNotDead = 1;
 				currentHealth = startingHealth;
+				healthDisplay.text = "Health: " + currentHealth.ToString ();
 				player.gameObject.SetActive(true);
 				lifeCount -= 1;
 				currentHealth = startingHealth;
@@ -189,7 +190,7 @@ public class PlayerController : MonoBehaviour {
 
 		case "Enemy":
 			if (isShield == 1 && time > shieldBreak) {
-				
+
 			} else {
 				currentHealth -= 10;
 				healthDisplay.text = "Health: " + currentHealth.ToString ();
@@ -242,7 +243,7 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject == level4Hub) 
 		{
 			transform.position = level4Start.transform.position;
-			time = StartingHealth;
+			time = StartingTime;
 		}
 		if (other.gameObject == level5Hub) 
 		{
