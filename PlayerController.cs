@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour {
 	public int lifeCount = 3;
 	bool teleToHub = false;
 	
+	public float camPosition1;
+	public float camPosition2;
+	
 	public float shotSpawnMove;
 
 	int isShield = 5000;
@@ -64,6 +67,7 @@ public class PlayerController : MonoBehaviour {
 	public int boss1UnlockPoints;
 	public int boss2UnlockPoints;
 
+	public Camera playerCam;
 	public GameObject player;
 	CharacterController characterController;
 	// Use this for initialization
@@ -110,7 +114,18 @@ public class PlayerController : MonoBehaviour {
 			isShield = 0;
 			messageText.text = "";
 		}
-
+		
+		if(Input.GetKeyDown("w") || Input.GetKeyDown("s"))
+		{
+			if(playerCam.transform.position.z - transform.position.z = camPosition1)
+			{
+				playerCam.transform.Translate(0, 0, camPosition2-camPosition1);
+			}
+			if(playerCam.transform.position.z - transform.position.z = camPosition2)
+			{
+				playerCam.transform.Translate(0, 0, -(camPosition2 - camPosition1));
+			}
+		}
 		if(Input.GetKeyDown("d") && facingRight == false)
 		{
 			player.transform.Rotate (0, 0, 180);
@@ -127,6 +142,7 @@ public class PlayerController : MonoBehaviour {
 			shotSpawn.transform.Rotate(0, 180, 0);
 			shotSpawn.transform.Translate(-shotSpawnMove, 0, 0);
 		}
+
 		if (Input.GetButtonDown ("Fire1"))
 		{
 			if(isGunBoost == 0)
