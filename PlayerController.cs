@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Boss;
 	public int lifeCount = 3;
 	bool teleToHub = false;
+	
+	public float shotSpawnMove;
 
 	int isShield = 5000;
 	float shieldBreak;
@@ -114,12 +116,16 @@ public class PlayerController : MonoBehaviour {
 			player.transform.Rotate (0, 0, 180);
 			facingRight = true;
 			facingLeft = false;
+			shotSpawn.transform.Rotate(0, 180, 0);
+			shotSpawn.tranform.Translate(shotSpawnMove, 0, 0);
 		}
 		if(Input.GetKeyDown("a") && facingLeft == false)
 		{
 			player.transform.Rotate (0, 0, 180);
 			facingLeft = true;
 			facingRight = false;
+			shotSpawn.transform.Rotate(0, 180, 0);
+			shotSpawn.transform.Translate(-shotSpawnMove, 0, 0);
 		}
 		if (Input.GetButtonDown ("Fire1"))
 		{
