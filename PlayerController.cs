@@ -24,10 +24,10 @@ public class PlayerController : MonoBehaviour {
 	public GameObject Boss;
 	public int lifeCount = 3;
 	bool teleToHub = false;
-	
+
 	public float camPosition1;
 	public float camPosition2;
-	
+
 	public float shotSpawnMove;
 
 	int isShield = 5000;
@@ -114,14 +114,14 @@ public class PlayerController : MonoBehaviour {
 			isShield = 0;
 			messageText.text = "";
 		}
-		
+
 		if(Input.GetKeyDown("w") || Input.GetKeyDown("s"))
 		{
-			if(playerCam.transform.position.z - transform.position.z = camPosition1)
+			if(playerCam.transform.position.z == camPosition1)
 			{
 				playerCam.transform.Translate(0, 0, camPosition2-camPosition1);
 			}
-			if(playerCam.transform.position.z - transform.position.z = camPosition2)
+			if(playerCam.transform.position.z == camPosition2)
 			{
 				playerCam.transform.Translate(0, 0, -(camPosition2 - camPosition1));
 			}
@@ -131,16 +131,16 @@ public class PlayerController : MonoBehaviour {
 			player.transform.Rotate (0, 0, 180);
 			facingRight = true;
 			facingLeft = false;
+			shotSpawn.transform.Translate(0, 0, -shotSpawnMove);
 			shotSpawn.transform.Rotate(0, 180, 0);
-			shotSpawn.tranform.Translate(shotSpawnMove, 0, 0);
 		}
 		if(Input.GetKeyDown("a") && facingLeft == false)
 		{
 			player.transform.Rotate (0, 0, 180);
 			facingLeft = true;
 			facingRight = false;
+			shotSpawn.transform.Translate(0, 0, -shotSpawnMove);
 			shotSpawn.transform.Rotate(0, 180, 0);
-			shotSpawn.transform.Translate(-shotSpawnMove, 0, 0);
 		}
 
 		if (Input.GetButtonDown ("Fire1"))
