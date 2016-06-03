@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour {
 	public GameObject level6Hub;
 	public GameObject hub;
 
+   public GameObject winObject;
+
 	public int boss1UnlockPoints;
 	public int boss2UnlockPoints;
 
@@ -248,6 +250,14 @@ public class PlayerController : MonoBehaviour {
 		case "Crush":
 			currentHealth = 0.0f;
 			break;
+     case "Win":
+        winLoseText.text = "You Win! Thanks for playing!
+Credits
+Evan Banks - Level Design
+Daniel Likeness - Level Design
+Jonathan Perez - Model Design
+Isaac Duarte-Villa - Programming";
+        break;
 		}
 
 		if (other.gameObject == level1Hub) 
