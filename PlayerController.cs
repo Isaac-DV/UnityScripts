@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour {
 	public int lifeCount = 3;
 	bool teleToHub = false;
 
+	private float level2UnlockP = 10;
+	private float level4UnlockP = 20;
+	private float level5UnlockP = 30;
+
 	public float camPosition1;
 	public float camPosition2;
 
@@ -210,6 +214,24 @@ public class PlayerController : MonoBehaviour {
 			other.gameObject.SetActive(false);
 			pickupCount += 1;
 			counter.text = "Points: " + pickupCount.ToString ();
+			switch(pickupCount){
+				case level2UnlockP:
+					level2Hub.gameObject.SetActive(true);
+					break;
+				case boss1UnlockPoints:
+					level3Hub.gameObject.SetActive(true);
+					break;
+				case level4UnlockP:
+					level4Hub.gameObject.SetActive(true);
+					break;
+				case level5UnlockP:
+					level5Hub.gameObject.SetActive(true);
+					break;
+				case boss2UnlockPoints:
+					level6Hub.gameObject.SetActive(true);
+				default:
+					break;
+			}
 			break;
 
 		case "Enemy":
@@ -264,31 +286,37 @@ Isaac Duarte-Villa - Programming";
 		{
 			transform.position = level1Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 1";
 		}
 		if (other.gameObject == level2Hub) 
 		{
 			transform.position = level2Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 2";
 		}
 		if (other.gameObject == level3Hub) 
 		{
 			transform.position = level3Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 3 - Boss";
 		}
 		if (other.gameObject == level4Hub) 
 		{
 			transform.position = level4Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 4";
 		}
 		if (other.gameObject == level5Hub) 
 		{
 			transform.position = level5Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 5";
 		}
 		if (other.gameObject == level6Hub) 
 		{
 			transform.position = level6Start.transform.position;
 			time = StartingTime;
+			messageText.text = "Level 6 - Final Boss";
 		}
 		if (other.gameObject == level1End) 
 		{
