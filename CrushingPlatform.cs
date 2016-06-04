@@ -7,9 +7,10 @@ public class CrushingPlatform : MonoBehaviour {
   public float speed;
   public GameObject crushingPlatform;
   bool isFalling = 0;
+  private float pos;
   
   void Start(){
-    
+    pos = transform.position.y;
   }
   void Update(){
     if(isFalling == 1)
@@ -28,5 +29,9 @@ public class CrushingPlatform : MonoBehaviour {
       isFalling = 0;
       break;
     }
+  }
+  void ResetPosition()
+  {
+		transform.position.y = pos;
   }
 }
