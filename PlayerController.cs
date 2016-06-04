@@ -273,11 +273,11 @@ public class PlayerController : MonoBehaviour {
 			currentHealth = 0.0f;
 			break;
      case "Win":
-        winLoseText.text = "You Win! Thanks for playing!
-Credits
-Evan Banks - Level Design
-Daniel Likeness - Level Design
-Jonathan Perez - Model Design
+        winLoseText.text = "You Win! Thanks for playing! \n
+Credits \n
+Evan Banks - Level Design \n
+Daniel Likeness - Level Design \n
+Jonathan Perez - Model Design \n
 Isaac Duarte-Villa - Programming";
         break;
 		}
