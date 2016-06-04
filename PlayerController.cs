@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour {
 	public float StartingTime = 100;
 	public float timeUntilTele = -1;
 	float currentHealth;
-	public int pickupCount;
+	public float pickupCount;
 	public Text counter;
 	public Text healthDisplay;
 	public Text winLoseText;
@@ -68,13 +68,13 @@ public class PlayerController : MonoBehaviour {
 	public GameObject level6Hub;
 	public GameObject hub;
 
-   public GameObject winObject;
+	public GameObject winObject;
 
-	public int boss1UnlockPoints;
-	public int boss2UnlockPoints;
+	public float boss1UnlockPoints;
+	public float boss2UnlockPoints;
 
 	public Camera playerCam;
-	private CrushPlatform crushingScript;
+	private CrushReset crushingScript;
 	public GameObject player;
 	CharacterController characterController;
 	// Use this for initialization
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour {
 		winLoseText.text = "";
 		lifeCountText.text = "Lives: " + lifeCount.ToString ();
 		messageText.text = "";
-		crushingScript = GameObject.Find("CrushPlatform").GetComponent<CrushingPlatform>();
+		crushingScript = GameObject.Find("Crush").GetComponent<CrushReset>();
 	}
 
 	// Update is called once per frame
@@ -123,7 +123,7 @@ public class PlayerController : MonoBehaviour {
 			messageText.text = "";
 		}
 
-		if(Input.GetKeyDown("w") || Input.GetKeyDown("s"))
+	/*	if(Input.GetKeyDown("w") || Input.GetKeyDown("s"))
 		{
 			if(playerCam.transform.position.z == camPosition1)
 			{
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				playerCam.transform.Translate(0, 0, -(camPosition2 - camPosition1));
 			}
-		}
+		} */
 		if(Input.GetKeyDown("d") && facingRight == false)
 		{
 			player.transform.Rotate (0, 0, 180);
@@ -214,26 +214,23 @@ public class PlayerController : MonoBehaviour {
 	{
 		switch (other.gameObject.tag) {
 		case "Pickup":
-			other.gameObject.SetActive(false);
+			other.gameObject.SetActive (false);
 			pickupCount += 1;
 			counter.text = "Points: " + pickupCount.ToString ();
-			switch(pickupCount){
-				case level2UnlockP:
-					level2Hub.gameObject.SetActive(true);
-					break;
-				case boss1UnlockPoints:
-					level3Hub.gameObject.SetActive(true);
-					break;
-				case level4UnlockP:
-					level4Hub.gameObject.SetActive(true);
-					break;
-				case level5UnlockP:
-					level5Hub.gameObject.SetActive(true);
-					break;
-				case boss2UnlockPoints:
-					level6Hub.gameObject.SetActive(true);
-				default:
-					break;
+			if (pickupCount == level2UnlockP) {
+				level2Hub.gameObject.SetActive (true);
+			}
+			if (pickupCount == boss1UnlockPoints) {
+				level3Hub.gameObject.SetActive (true);
+			}
+			if (pickupCount == level4UnlockP) {
+				level4Hub.gameObject.SetActive (true);
+			}
+			if (pickupCount == level5UnlockP) {
+				level5Hub.gameObject.SetActive (true);
+			}
+			if (pickupCount == boss2UnlockPoints) {
+				level6Hub.gameObject.SetActive (true);
 			}
 			break;
 
@@ -275,14 +272,9 @@ public class PlayerController : MonoBehaviour {
 		case "Crush":
 			currentHealth = 0.0f;
 			break;
-     case "Win":
-        winLoseText.text = "You Win! Thanks for playing! \n
-Credits \n
-Evan Banks - Level Design \n
-Daniel Likeness - Level Design \n
-Jonathan Perez - Model Design \n
-Isaac Duarte-Villa - Programming";
-        break;
+		case "Win":
+			winLoseText.text = "You Win! Thanks for playing! \nCredits \nEvan Banks - Level Design \nDaniel Likeness - Level Design \nJonathan Perez - Model Design \nIsaac Duarte-Villa - Programming";
+				break;
 		}
 
 		if (other.gameObject == level1Hub) 
@@ -325,58 +317,60 @@ Isaac Duarte-Villa - Programming";
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			level2Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss1UnlockPoints)
-			{
-				level3Hub.gameObject.SetActive (true);
-			}
-			if(pickupCount >= boss2UnlockPoints)
-			{
-				level6Hub.gameObject.SetActive(true);
+			if (pickupCount < level2UnlockP) {
+				messageText.text = (level2UnlockP - pickupCount).ToString () + "more points to unlock Level 2!";
+			} else if (pickupCount < boss1UnlockPoints) {
+				messageText.text = (boss1UnlockPoints - pickupCount).ToString () + "more points to unlock Level 3!";
+			} else if (pickupCount < level4UnlockP) {
+				messageText.text = (level4UnlockP - pickupCount).ToString () + "more points to unlock Level 4!";
+			} else if (pickupCount < level5UnlockP) {
+				messageText.text = (level5UnlockP - pickupCount).ToString () + "more points to unlock Level 5!";
+			} else if (pickupCount < boss2UnlockPoints) {
+				messageText.text = (boss2UnlockPoints - pickupCount).ToString () + "more points to unlock Level 6!";
 			}
 		}
 		if (other.gameObject == level2End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			level3Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss1UnlockPoints)
-			{
-				level3Hub.gameObject.SetActive(true);
-			}
-			if(pickupCount >= boss2UnlockPoints)
-			{
-				level6Hub.gameObject.SetActive(true);
+			if (pickupCount < boss1UnlockPoints) {
+				messageText.text = (boss1UnlockPoints - pickupCount).ToString () + "more points to unlock Level 3!";
+			} else if (pickupCount < level4UnlockP) {
+				messageText.text = (level4UnlockP - pickupCount).ToString () + "more points to unlock Level 4!";
+			} else if (pickupCount < level5UnlockP) {
+				messageText.text = (level5UnlockP - pickupCount).ToString () + "more points to unlock Level 5!";
+			} else if (pickupCount < boss2UnlockPoints) {
+				messageText.text = (boss2UnlockPoints - pickupCount).ToString () + "more points to unlock Level 6!";
 			}
 		}
 		if (other.gameObject == level3End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			level4Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints)
-			{
-				level6Hub.gameObject.SetActive(true);
+			if (pickupCount < level4UnlockP) {
+				messageText.text = (level4UnlockP - pickupCount).ToString () + "more points to unlock Level 4!";
+			} else if (pickupCount < level5UnlockP) {
+				messageText.text = (level5UnlockP - pickupCount).ToString () + "more points to unlock Level 5!";
+			} else if (pickupCount < boss2UnlockPoints) {
+				messageText.text = (boss2UnlockPoints - pickupCount).ToString () + "more points to unlock Level 6!";
 			}
 		}
 		if (other.gameObject == level4End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			level5Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints)
-			{
-				level6Hub.gameObject.SetActive(true);
+			if (pickupCount < level5UnlockP) {
+				messageText.text = (level5UnlockP - pickupCount).ToString () + "more points to unlock Level 5!";
+			} else if (pickupCount < boss2UnlockPoints) {
+				messageText.text = (boss2UnlockPoints - pickupCount).ToString () + "more points to unlock Level 6!";
 			}
 		}
 		if (other.gameObject == level5End) 
 		{
 			transform.position = hub.transform.position;
 			time = 5000;
-			level6Hub.gameObject.SetActive(true);
-			if(pickupCount >= boss2UnlockPoints)
-			{
-				level3Hub.gameObject.SetActive(true);
+			if (pickupCount < boss2UnlockPoints) {
+				messageText.text = (boss2UnlockPoints - pickupCount).ToString () + "more points to unlock Level 6!";
 			}
 		}
 		if (other.gameObject == level6End) 
