@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour {
 	public int boss2UnlockPoints;
 
 	public Camera playerCam;
+	private CrushPlatform crushingScript;
 	public GameObject player;
 	CharacterController characterController;
 	// Use this for initialization
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour {
 		winLoseText.text = "";
 		lifeCountText.text = "Lives: " + lifeCount.ToString ();
 		messageText.text = "";
+		crushingScript = GameObject.Find("CrushPlatform").GetComponent<CrushingPlatform>();
 	}
 
 	// Update is called once per frame
@@ -182,6 +184,7 @@ public class PlayerController : MonoBehaviour {
 				currentHealth = startingHealth;
 				lifeCountText.text = "Lives: " + lifeCount.ToString ();
 				winLoseText.text = "";
+				crushingScript.ResetPosition();
 			}
 		}
 		if (currentHealth <= 0) 
