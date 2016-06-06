@@ -15,13 +15,13 @@ public class CameraController : MonoBehaviour {
     {
       if(isPos1 == true)
       {
-        transform.position = new Vector3(transform.position.x, camPos2, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y, camPos2);
         isPos1 = false;
         isPos2 = true;
       }
       else if(isPos2 = true)
       {
-        transform.position = new Vector3(transform.position.x, camPos1, transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y, camPos1);
         isPos2 = false;
         isPos1 = true;
       }
