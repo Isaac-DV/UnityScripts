@@ -20,7 +20,7 @@ public class BossController : MonoBehaviour {
 	int isSeventyFive = 0;
 	int thirdSpawn = 0;
 	int canHit = 1;
-	int enemyCount;
+	public int enemyCount;
 	// Use this for initialization
 	void Start () {
 		currentHealth = startingHealth;
