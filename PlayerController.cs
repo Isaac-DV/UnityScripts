@@ -275,6 +275,9 @@ public class PlayerController : MonoBehaviour {
 		case "Win":
 			winLoseText.text = "You Win! Thanks for playing! \nCredits \nEvan Banks - Level Design \nDaniel Likeness - Level Design \nJonathan Perez - Model Design \nIsaac Duarte-Villa - Programming";
 				break;
+		case "BossBullet":
+			currentHealth -= 10;
+			break;
 		}
 
 		if (other.gameObject == level1Hub) 
