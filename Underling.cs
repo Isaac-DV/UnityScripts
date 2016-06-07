@@ -4,7 +4,7 @@ using System.Collections;
 public class Underling : MonoBehaviour {
   float min = 2f;
 	float max = 3f;
-  float distance = 25;
+  public float distance = 25;
   public float time;
 	public float speed = 10;
 	public float currentHealth;
